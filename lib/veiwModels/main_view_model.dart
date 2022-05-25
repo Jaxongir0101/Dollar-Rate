@@ -24,13 +24,16 @@ class MainViewModel extends ChangeNotifier {
 
     try {
       var response = await http.get(myUrl);
-      List data = jsonDecode(response.body);
+      List data2 = jsonDecode(response.body);
+      List data = [];
 
       _currencyList.clear();
 
-      data.forEach((element) {
+      data2.forEach((element) {
         _currencyList.add(CurrencyRate.fromJson(element));
       });
+      data.add(data2);
+      data.reversed;
 
       _apiResponse = ApiResponse.succes(_currencyList);
     } catch (exception) {

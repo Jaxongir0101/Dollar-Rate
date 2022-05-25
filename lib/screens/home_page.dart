@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:dollar_kursi/screens/details_page.dart';
 import 'package:dollar_kursi/veiwModels/api_response.dart';
 import 'package:dollar_kursi/veiwModels/main_view_model.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +48,8 @@ class _HomePageState extends State<HomePage> {
   Future<ApiResponse>? futureWords;
 
   MainViewModel? _mainVM;
+  List list = [];
+
   @override
   void initState() {
     super.initState();
@@ -63,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-              _pullRefresh();
+                _pullRefresh();
               },
               icon: Icon(Icons.refresh))
         ],
@@ -82,16 +87,18 @@ class _HomePageState extends State<HomePage> {
 
   Widget _listView(AsyncSnapshot snapshot) {
     if (snapshot.data?.status == Status.LOADING) {
-      return const Center(
+      return Center(
         child: CircularProgressIndicator(),
       );
     }
+
     if (snapshot.data?.status == Status.SUCCES) {
       return Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
         child: ListView.builder(
             itemCount: snapshot.data?.data?.length,
             itemBuilder: (BuildContext context, int index) {
+              print(snapshot.data?.data[index].code);
               return Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 height: 132,
@@ -222,7 +229,6 @@ class _HomePageState extends State<HomePage> {
               ),
               fit: BoxFit.cover,
             ),
-         
           ],
         ),
       );
@@ -242,18 +248,15 @@ class _HomePageState extends State<HomePage> {
   Widget buildError(String? errorMsg) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            errorMsg ?? "INITIAL",
-            style: TextStyle(fontSize: 36),
+            errorMsg ?? "",
+            
           ),
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  _mainVM?.getCurrencyRate();
-                });
-              },
-              icon: Icon(Icons.refresh))
+          Image.asset("assets/images/gif.gif"),
+         const SizedBox(height: 30,),
+        
         ],
       ),
     );
